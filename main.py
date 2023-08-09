@@ -34,7 +34,7 @@ class Comment:
 class CustomJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Post):
-            return {'index': obj.index, 'body': obj.body, 'author': obj.author}
+            return {'body': obj.body, 'author': obj.author}
         else:
             return super().default(obj)
 
