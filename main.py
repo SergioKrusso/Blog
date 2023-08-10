@@ -11,30 +11,20 @@ class User:
         self.username = username
 
 
-# class Post:
-#    def __init__(self, body: str, author=User):
-#        self.body = body
-#        self.author = author
 class Post:
     index = 0
 
-    def __init__(self, index: int, body: str, author=User):
+    def __init__(self, body: str, author: User):
+        self.body = body
+        self.author = author
         self.index = Post.index
-        self.body = body
-        self.author = author
         Post.index += 1
-
-
-class Comment:
-    def __init__(self, body: str, author=User):
-        self.body = body
-        self.author = author
 
 
 class CustomJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Post):
-            return {'body': obj.body, 'author': obj.author}
+            return {'index': obj.index, 'body': obj.body, 'author': obj.author}
         else:
             return super().default(obj)
 
@@ -54,19 +44,6 @@ def create_post():
 @app.route("/post", methods=['GET'])
 def read_posts():
     return jsonify({"posts": posts})
-
-
-@app.route("/post", methods=['PUT'])
-def edit_post():
-    data = request.get_json()
-    posts[index] = data
-    return jsonify(data)
-
-
-@app.route("/post", methods=['DELETE'])
-def delete_post():
-    post = posts.pop(index)
-    return jsonify(post)
 
 
 if __name__ == '__main__':
